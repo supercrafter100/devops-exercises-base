@@ -1,6 +1,6 @@
 const { v4 } = require('uuid');
 const postgres = require('postgres');
-const uri = `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PWD}@${process.env.POSTGERS_HOST}:5432/${process.env.POSTGRES_DB}`;
+const uri = `postgres://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PWD}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DB}`;
 const sql = postgres(uri);
 
 async function getBlogs(req, res) {
