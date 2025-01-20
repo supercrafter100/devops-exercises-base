@@ -32,7 +32,13 @@ async function deleteBlog(id) {
     const response = await fetch(`/api/blogs/${id}`, {
         method: 'DELETE',
     });
-    return await response.json();
+
+    if (response.ok) {
+        window.location.reload();
+    }
+
+    const text = await response.text();
+    alert(text);
 }
 
 async function getBlogs() {
