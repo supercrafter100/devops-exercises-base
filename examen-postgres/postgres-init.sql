@@ -1,7 +1,7 @@
 CREATE table blogs (
     id serial primary key,
     title varchar(255),
-    content text,
+    content text
 );
 
 INSERT INTO blogs (title, content) VALUES ('Eerste blog met PostgreSQL!', 'Je hebt nu je eerste blog met PostgreSQL aangemaakt!');
