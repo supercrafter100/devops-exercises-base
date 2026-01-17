@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>URL Shortener</title>
+        <!-- Tailwind CDN (no build step) -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <meta name="description" content="Simple educational URL shortener" />
+    </head>
+    <body class="bg-slate-50 min-h-screen">
+        <div class="max-w-2xl mx-auto px-4 py-12">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-800">URL Shortener</h1>
+                <p class="text-slate-600 mt-2">
+                    A tiny, clean app for DevOps practice.
+                </p>
+            </header>
+
+            <main
+                class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+            >
+                <!-- Input form -->
+                <label
+                    for="longUrl"
+                    class="block text-sm font-medium text-slate-700"
+                    >Paste a long URL</label
+                >
+                <div class="mt-2 flex gap-3">
+                    <input
+                        id="longUrl"
+                        type="url"
+                        placeholder="https://example.com/my/very/long/url"
+                        class="flex-1 rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                    <button
+                        id="shortenBtn"
+                        class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-700 active:bg-indigo-800 transition-colors"
+                    >
+                        Shorten
+                    </button>
+                </div>
+                <p id="hint" class="text-xs text-slate-500 mt-2">
+                    Only http(s) URLs are supported.
+                </p>
+
+                <!-- Result card -->
+                <section id="resultCard" class="hidden mt-6">
+                    <div
+                        class="rounded-lg border border-indigo-200 bg-indigo-50 p-4"
+                    >
+                        <h2 class="text-sm font-semibold text-indigo-800">
+                            Your short link
+                        </h2>
+                        <p class="mt-2">
+                            <a
+                                id="shortLink"
+                                href="#"
+                                target="_blank"
+                                rel="noopener"
+                                class="text-indigo-700 underline decoration-indigo-300 hover:decoration-indigo-600"
+                            >
+                                <!-- filled by JS -->
+                            </a>
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Error message -->
+                <p id="errorMsg" class="hidden mt-4 text-sm text-red-600"></p>
+            </main>
+
+            <footer class="text-center mt-10 text-xs text-slate-500">
+                <p>
+                    Backend expected at <span class="font-mono">/api</span> on
+                    the same origin.
+                </p>
+            </footer>
+        </div>
+
+        <!-- Frontend logic -->
+        <script src="./script.js"></script>
+    </body>
+</html>
