@@ -113,11 +113,9 @@ api.post('/shorten', async (req, res) => {
 
     // Minimal sanity check without external validation libraries
     if (!url || !/^https?:\/\//i.test(url)) {
-        return res
-            .status(400)
-            .json({
-                error: 'Please provide a valid http(s) URL in { "url": "..." }',
-            });
+        return res.status(400).json({
+            error: 'Please provide a valid http(s) URL in { "url": "..." }',
+        });
     }
 
     try {
@@ -128,6 +126,16 @@ api.post('/shorten', async (req, res) => {
         console.error('Error creating short URL:', err);
         return res.status(500).json({ error: 'Failed to shorten URL' });
     }
+});
+
+/**
+ * GET /api/verify
+ * Returns which storage backend is in use
+ * Example: { "storage": "memory" } or { "storage": "redis" }
+ * NOTE: Must be defined BEFORE /:shortCode so it matches first
+ */
+api.get('/verify', (req, res) => {
+    return res.json({ storage: storage.type() });
 });
 
 /**
@@ -147,15 +155,6 @@ api.get('/:shortCode', async (req, res) => {
         console.error('Error during redirect:', err);
         return res.status(500).json({ error: 'Failed to lookup short code' });
     }
-});
-
-/**
- * GET /api/verify
- * Returns which storage backend is in use
- * Example: { "storage": "memory" } or { "storage": "redis" }
- */
-api.get('/verify', (req, res) => {
-    return res.json({ storage: storage.type() });
 });
 
 // Mount API router
