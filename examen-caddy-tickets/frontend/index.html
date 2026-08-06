@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Halcyon Events — Gastenlijst</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-slate-900 min-h-screen text-slate-100">
+        <div class="max-w-4xl mx-auto px-4 py-10">
+            <header class="mb-8 flex items-end justify-between flex-wrap gap-4">
+                <div>
+                    <p
+                        class="text-xs font-semibold tracking-widest text-fuchsia-400 uppercase"
+                    >
+                        Halcyon Events
+                    </p>
+                    <h1 class="text-3xl font-bold">Gastenlijst</h1>
+                    <p class="text-slate-400 mt-1 text-sm">
+                        Check gasten in aan de ingang.
+                    </p>
+                </div>
+                <div
+                    id="storageBadge"
+                    class="text-xs font-mono px-3 py-1.5 rounded-full bg-slate-800 text-slate-300"
+                >
+                    opslag: onbekend
+                </div>
+            </header>
+
+            <!-- Gast toevoegen -->
+            <section
+                class="bg-slate-800 rounded-xl border border-slate-700 p-5 mb-6"
+            >
+                <h2 class="text-sm font-semibold text-slate-200 mb-3">
+                    Gast toevoegen
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <input
+                        id="name"
+                        placeholder="Naam"
+                        class="rounded-lg bg-slate-900 border border-slate-700 px-3 py-2 text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                    />
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="E-mail"
+                        class="rounded-lg bg-slate-900 border border-slate-700 px-3 py-2 text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                    />
+                    <select
+                        id="ticketType"
+                        class="rounded-lg bg-slate-900 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                    >
+                        <option value="standard">Standard</option>
+                        <option value="vip">VIP</option>
+                        <option value="press">Press</option>
+                    </select>
+                </div>
+                <button
+                    id="addBtn"
+                    class="mt-3 rounded-lg bg-fuchsia-600 text-white px-4 py-2 text-sm font-medium hover:bg-fuchsia-700 transition-colors"
+                >
+                    Toevoegen
+                </button>
+                <p id="errorMsg" class="hidden mt-3 text-sm text-red-400"></p>
+            </section>
+
+            <!-- Gastenlijst -->
+            <section
+                class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden"
+            >
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-900/60 text-slate-400">
+                            <tr>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    Naam
+                                </th>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    E-mail
+                                </th>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    Ticket
+                                </th>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    Status
+                                </th>
+                                <th class="px-4 py-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            id="guestsBody"
+                            class="divide-y divide-slate-700"
+                        ></tbody>
+                    </table>
+                </div>
+                <p
+                    id="emptyMsg"
+                    class="hidden px-4 py-8 text-center text-sm text-slate-500"
+                >
+                    Nog geen gasten op de lijst.
+                </p>
+            </section>
+
+            <footer class="text-center mt-8 text-xs text-slate-500">
+                API verwacht op <span class="font-mono">/api</span> op dezelfde
+                origin.
+            </footer>
+        </div>
+
+        <script src="./script.js"></script>
+    </body>
+</html>

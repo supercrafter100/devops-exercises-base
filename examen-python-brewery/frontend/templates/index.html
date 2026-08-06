@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Solstice Brewing Co. — Brouwsels</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-amber-50 min-h-screen">
+        <div class="max-w-5xl mx-auto px-4 py-10">
+            <header class="mb-8 flex items-end justify-between flex-wrap gap-4">
+                <div>
+                    <p
+                        class="text-xs font-semibold tracking-widest text-amber-700 uppercase"
+                    >
+                        Solstice Brewing Co.
+                    </p>
+                    <h1 class="text-3xl font-bold text-stone-800">
+                        Brouwsels in productie
+                    </h1>
+                    <p class="text-stone-600 mt-1 text-sm">
+                        Volg elke batch van maischen tot afvullen.
+                    </p>
+                </div>
+
+                {% if api_online %}
+                <div
+                    class="text-xs font-mono px-3 py-1.5 rounded-full {% if storage == 'mongodb' %}bg-green-100 text-green-800{% else %}bg-stone-200 text-stone-700{% endif %}"
+                >
+                    opslag: {{ storage }}
+                </div>
+                {% else %}
+                <div
+                    class="text-xs font-mono px-3 py-1.5 rounded-full bg-red-100 text-red-800"
+                >
+                    API onbereikbaar
+                </div>
+                {% endif %}
+            </header>
+
+            {% if not api_online %}
+            <div
+                class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-sm text-red-800"
+            >
+                De webinterface kan de API niet bereiken. Controleer of de API
+                container draait en of de omgevingsvariabele
+                <span class="font-mono">API_URL</span> juist staat.
+            </div>
+            {% endif %}
+
+            <!-- Batch toevoegen -->
+            <section
+                class="bg-white rounded-xl shadow-sm border border-stone-200 p-5 mb-6"
+            >
+                <h2 class="text-sm font-semibold text-stone-700 mb-3">
+                    Nieuw brouwsel starten
+                </h2>
+                <form
+                    method="post"
+                    action="/batches"
+                    class="grid grid-cols-1 sm:grid-cols-4 gap-3"
+                >
+                    <input
+                        name="name"
+                        placeholder="Naam (Zonnewende Tripel)"
+                        required
+                        class="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                    <input
+                        name="style"
+                        placeholder="Stijl (Tripel)"
+                        required
+                        class="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                    <input
+                        name="volume_l"
+                        type="number"
+                        min="0"
+                        value="500"
+                        placeholder="Liter"
+                        class="rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    />
+                    <button
+                        type="submit"
+                        class="rounded-lg bg-amber-600 text-white px-4 py-2 text-sm font-medium hover:bg-amber-700 transition-colors"
+                    >
+                        Toevoegen
+                    </button>
+                </form>
+            </section>
+
+            <!-- Overzicht -->
+            <section
+                class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden"
+            >
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-stone-50 text-stone-600">
+                            <tr>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    Brouwsel
+                                </th>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    Stijl
+                                </th>
+                                <th class="text-right font-semibold px-4 py-3">
+                                    Volume
+                                </th>
+                                <th class="text-left font-semibold px-4 py-3">
+                                    Fase
+                                </th>
+                                <th class="px-4 py-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-100">
+                            {% for batch in batches %}
+                            <tr class="hover:bg-stone-50">
+                                <td class="px-4 py-3 text-stone-800">
+                                    {{ batch.name }}
+                                </td>
+                                <td class="px-4 py-3 text-stone-600">
+                                    {{ batch.style }}
+                                </td>
+                                <td
+                                    class="px-4 py-3 text-right text-stone-800 font-medium"
+                                >
+                                    {{ batch.volume_l }} L
+                                </td>
+                                <td class="px-4 py-3">
+                                    <form
+                                        method="post"
+                                        action="/batches/{{ batch.id }}/stage"
+                                        class="flex items-center gap-2"
+                                    >
+                                        <select
+                                            name="stage"
+                                            class="rounded-md border border-stone-300 px-2 py-1 text-xs"
+                                        >
+                                            {% for stage in stages %}
+                                            <option
+                                                value="{{ stage }}"
+                                                {% if stage == batch.stage %}selected{% endif %}
+                                            >
+                                                {{ stage }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button
+                                            type="submit"
+                                            class="text-xs text-amber-700 hover:underline"
+                                        >
+                                            opslaan
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="px-4 py-3 text-right">
+                                    <form
+                                        method="post"
+                                        action="/batches/{{ batch.id }}/delete"
+                                    >
+                                        <button
+                                            type="submit"
+                                            class="text-xs text-red-600 hover:text-red-800 hover:underline"
+                                        >
+                                            verwijder
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if not batches %}
+                <p class="px-4 py-8 text-center text-sm text-stone-500">
+                    Nog geen brouwsels in productie.
+                </p>
+                {% endif %}
+            </section>
+
+            <footer class="text-center mt-8 text-xs text-stone-500">
+                Server-side gerenderd met Flask en Jinja2.
+            </footer>
+        </div>
+    </body>
+</html>

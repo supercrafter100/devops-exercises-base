@@ -1,0 +1,17 @@
+**/opgave.md
+**/init.sh
+**/verify.sh
+
+# Uitwerkingen mogen NOOIT in de repo terechtkomen: studenten clonen deze repo.
+solutions/
+solution/
+**/solution/
+**/solutions/
+*-solution/
+*-oplossing/
+devops-exercises-solutions/
+
+# Build artefacten van de voorbeeldapplicaties
+**/target/
+**/node_modules/
+**/vendor/

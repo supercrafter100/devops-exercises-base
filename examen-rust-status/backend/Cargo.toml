@@ -1,0 +1,13 @@
+[package]
+name = "meridian-status"
+version = "1.0.0"
+edition = "2021"
+
+# Bewust weinig dependencies: dat houdt de Docker build snel en eenvoudig.
+[dependencies]
+tiny_http = "0.12"
+serde_json = "1"
+
+[[bin]]
+name = "server"
+path = "src/main.rs"
